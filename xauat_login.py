@@ -159,18 +159,19 @@ class ShenlanEncode(object):
 
 
 class XauatLogin(object):
-    host_login_page_url = 'http://10.186.255.33/srun_portal_pc?ac_id=1&theme=basic'  # 获取 ip
-    get_challenge_url = 'http://10.186.255.33/cgi-bin/get_challenge'  # 获取 token
-    log_in_url = 'http://10.186.255.33/cgi-bin/srun_portal'  # 登录 & 注销
-    get_login_info_url = 'http://10.186.255.33/cgi-bin/rad_user_info'  # 获取登录后的信息
+    # portal.ucas.ac.cn is not shipping inter
+    host_login_page_url = 'http://portal.ucas.ac.cn/srun_portal_pc?ac_id=1&theme=basic'  # 获取 ip
+    get_challenge_url = 'http://portal.ucas.ac.cn/cgi-bin/get_challenge'  # 获取 token
+    log_in_url = 'http://portal.ucas.ac.cn/cgi-bin/srun_portal'  # 登录 & 注销
+    get_login_info_url = 'http://portal.ucas.ac.cn/cgi-bin/rad_user_info'  # 获取登录后的信息
     new_headers = {
         'Accept': 'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01',
         'Accept-Encoding': 'gzip, deflate',
         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'Connection': 'keep-alive',
         'Cookie': 'lang=zh-CN',
-        'Host': '10.186.255.33',
-        'Referer': 'http://10.186.255.33/srun_portal_pc?ac_id=1&theme=basic',
+        'Host': 'portal.ucas.ac.cn',
+        'Referer': 'http://portal.ucas.ac.cn/srun_portal_pc?ac_id=1&theme=basic',
         'X-Requested-With': 'XMLHttpRequest',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36 Edg/88.0.705.81'
     }
@@ -258,7 +259,7 @@ class XauatLogin(object):
         error_info = re.search(r'"error":"(.*?)"', str_login_info).group(1)
         if error_info == 'ok':
             self.login_status = True
-            user_name = re.search(r'"user_name":"(\d+)"', str_login_info).group(1)
+            user_name = re.search(r'"user_name":"(.*?)"', str_login_info).group(1)
             user_balance = re.search(r'"user_balance":(.*?),', str_login_info).group(1)
             sum_bytes = re.search(r'"sum_bytes":(\d+),', str_login_info).group(1)
             print('\n{:-^41}'.format('Login successfully'))

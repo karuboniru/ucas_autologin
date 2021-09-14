@@ -1,8 +1,9 @@
 from xauat_login import XauatLogin
+from getpass import getpass
 
 if __name__ == '__main__':
-    username = str(input('请输入学号：'))
-    passwd = str(input('请输入密码: '))
+    username = str(input('请输入sep mail address：'))
+    passwd = str(getpass('请输入密码(will not be displayed): '))
     a = XauatLogin(username=username,
                    password=passwd)
     while 1:
