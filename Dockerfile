@@ -1,9 +1,18 @@
-FROM python:3
+FROM debian:11-slim AS build
+RUN apt-get update && \
+    apt-get install --no-install-suggests --no-install-recommends --yes python3 python3-venv && \
+    python3 -m venv /venv && \
+    /venv/bin/pip install --upgrade pip
+
+FROM build AS build-venv
+COPY requirements.txt /requirements.txt
+RUN /venv/bin/pip install --disable-pip-version-check -r /requirements.txt
+
+FROM gcr.io/distroless/python3-debian11
+COPY --from=build-venv /venv /venv
 
 WORKDIR /usr/src/app
 COPY requirements.txt ./
+COPY . /usr/src/app
 
-RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
-
-CMD [ "python", "./just_login.py" ]
+ENTRYPOINT [ "/venv/bin/python", "/usr/src/app/just_login.py" ]
